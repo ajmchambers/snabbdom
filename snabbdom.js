@@ -38,6 +38,16 @@ function init(modules, api) {
     }
   }
 
+  function processFragment(node) {
+    while (node.childNodes.length > 1) {
+      node.removeChild(node.lastChild)
+    }
+    if (node.childNodes.length === 0) {
+      node.appendChild(document.createElement('div'));
+    }
+    return node.firstChild;
+  }
+
   function emptyNodeAt(elm) {
     var id = elm.id ? '#' + elm.id : '';
     var c = elm.className ? '.' + elm.className.split(' ').join('.') : '';
@@ -230,6 +240,10 @@ function init(modules, api) {
     var i, elm, parent;
     var insertedVnodeQueue = [];
     for (i = 0; i < cbs.pre.length; ++i) cbs.pre[i]();
+
+    if (oldVnode instanceof DocumentFragment) {
+      oldVnode = processFragment(oldVnode);
+    }
 
     if (isUndef(oldVnode.sel)) {
       oldVnode = emptyNodeAt(oldVnode);

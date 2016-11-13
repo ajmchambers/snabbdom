@@ -25,7 +25,7 @@ function appendChild(node, child){
 }
 
 function parentNode(node){
-  return node.parentElement;
+  return node.parentElement || node.parentNode;
 }
 
 function nextSibling(node){
